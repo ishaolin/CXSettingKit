@@ -41,8 +41,8 @@
         _iconView = [[UIImageView alloc] init];
         
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = CX_PingFangSC_RegularFont(14.0);
-        _titleLabel.textColor = CXHexIColor(0x353C43);
+        _titleLabel.font = CX_PingFangSC_RegularFont(16.0);
+        _titleLabel.textColor = CXHexIColor(0x141414);
         
         _arrowView = [[UIImageView alloc] init];
         _arrowView.image = CX_SETTING_IMAGE(@"setting_right_arrow");
@@ -60,8 +60,16 @@
 }
 
 - (void)setRowModel:(CXSettingRowModel *)rowModel{
-    _rowModel = rowModel;
+    if(_rowModel == rowModel){
+        return;
+    }
     
+    _rowModel = rowModel;
+    [self displayRowModel:rowModel];
+    [self setNeedsLayout];
+}
+
+- (void)displayRowModel:(CXSettingRowModel *)rowModel{
     if(rowModel.image){
         _iconView.image = rowModel.image;
         _iconView.hidden = NO;
@@ -75,8 +83,6 @@
     _titleLabel.textAlignment = rowModel.titleAlignment;
     _titleLabel.text = rowModel.title;
     _arrowView.hidden = rowModel.isArrowHidden;
-    
-    [self setNeedsLayout];
 }
 
 - (void)layoutSubviews{
@@ -106,9 +112,13 @@
     [self layoutTitleLabel:arrowView_X];
 }
 
-- (void)layoutTitleLabel:(CGFloat)rightMaxX{
-    CGFloat titleLabel_X = (_iconView.isHidden ? 0 : 5.0) + CGRectGetMaxX(_iconView.frame);
-    CGFloat titleLabel_W = rightMaxX - titleLabel_X;
+- (void)layoutTitleLabel:(CGFloat)frameMaxX{
+    CGFloat titleLabel_X = CGRectGetMaxX(_iconView.frame);
+    if(!_iconView.isHidden){
+        titleLabel_X += 5.0;
+    }
+    
+    CGFloat titleLabel_W = frameMaxX - titleLabel_X;
     CGFloat titleLabel_H = CGRectGetHeight(self.bounds);
     CGFloat titleLabel_Y = 0;
     _titleLabel.frame = (CGRect){titleLabel_X, titleLabel_Y, titleLabel_W, titleLabel_H};

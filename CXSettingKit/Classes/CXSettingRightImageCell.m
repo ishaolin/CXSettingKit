@@ -30,7 +30,9 @@
     return self;
 }
 
-- (void)setRowModel:(CXSettingRowModel *)rowModel{
+- (void)displayRowModel:(CXSettingRowModel *)rowModel{
+    [super displayRowModel:rowModel];
+    
     CXSettingRightImageRowModel *imageModel = (CXSettingRightImageRowModel *)rowModel;
     if([imageModel.rightImage isKindOfClass:[UIImage class]]){
         _rightImageView.image = (UIImage *)imageModel.rightImage;
@@ -41,8 +43,6 @@
     }
     
     _rightImageSize = imageModel.rightImageSize;
-    
-    [super setRowModel:rowModel];
 }
 
 - (void)layoutSubviews{

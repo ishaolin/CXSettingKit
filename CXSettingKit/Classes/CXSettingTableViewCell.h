@@ -20,6 +20,8 @@
 
 + (instancetype)cellWithTableView:(UITableView *)tableView rowModel:(CXSettingRowModel *)rowModel;
 
-- (void)layoutTitleLabel:(CGFloat)rightMaxX;
+- (void)layoutTitleLabel:(CGFloat)frameMaxX;
+
+- (void)displayRowModel:(CXSettingRowModel *)rowModel;
 
 @end

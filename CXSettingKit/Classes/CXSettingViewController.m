@@ -7,11 +7,20 @@
 
 #import "CXSettingViewController.h"
 #import "CXSettingTableViewCell.h"
+#import "CXSettingHeaderFooterView.h"
+
+@interface CXSettingSectionModel ()
+
+- (void)calculate:(CGFloat)width;
+
+@end
 
 @implementation CXSettingViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.title = @"设置";
     
     CGFloat tableView_X = 0;
     CGFloat tableView_Y = CGRectGetMaxY(self.navigationBar.frame);
@@ -29,14 +38,18 @@
 - (void)reloadData{
     [self loadDataWithCompletion:^(NSArray<CXSettingSectionModel *> *items) {
         if(items){
+            [items enumerateObjectsUsingBlock:^(CXSettingSectionModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [obj calculate:CGRectGetWidth(self.tableView.bounds)];
+            }];
+            
             self->_settingItems = items;
-            [self tableViewReloadData];
+            [self refreshDisplay];
         }
     }];
 }
 
 - (void)loadDataWithCompletion:(CXSettingViewControllerDataBlock)completion{
-    !completion ?: completion(nil);
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -51,8 +64,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     CXSettingSectionModel *sectionModel = self.settingItems[indexPath.section];
     CXSettingRowModel *rowModel = sectionModel.rows[indexPath.row];
-    CXSettingTableViewCell *cell = [CXSettingTableViewCell cellWithTableView:tableView rowModel:rowModel];
-    return cell;
+    return [self tableView:tableView cellForRowModel:rowModel];
+}
+
+- (CXSettingTableViewCell *)tableView:(UITableView *)tableView cellForRowModel:(CXSettingRowModel *)rowModel{
+    return [CXSettingTableViewCell cellWithTableView:tableView rowModel:rowModel];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -63,19 +79,22 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     CXSettingSectionModel *sectionModel = self.settingItems[section];
-    return sectionModel.footerHeight;
+    return sectionModel.footer ? sectionModel.footer.height : 10.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return CGFLOAT_MIN;
+    CXSettingSectionModel *sectionModel = self.settingItems[section];
+    return sectionModel.header ? sectionModel.header.height : CGFLOAT_MIN;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    return nil;
+    CXSettingSectionModel *sectionModel = self.settingItems[section];
+    return [CXSettingHeaderFooterView viewWithTableView:tableView dataModel:sectionModel.header];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    return nil;
+    CXSettingSectionModel *sectionModel = self.settingItems[section];
+    return [CXSettingHeaderFooterView viewWithTableView:tableView dataModel:sectionModel.footer];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -92,8 +111,31 @@
     [rowModel invokeActionForContext:self];
 }
 
-- (void)tableViewReloadData{
+- (void)refreshDisplay{
     [self.tableView reloadData];
+}
+
+- (void)refreshDisplayForRowModel:(CXSettingRowModel *)rowModel{
+    __block NSUInteger section = 0;
+    __block NSUInteger row = NSNotFound;
+    [self.settingItems enumerateObjectsUsingBlock:^(CXSettingSectionModel * _Nonnull sectionModel, NSUInteger sectionIndex, BOOL * _Nonnull sectionStop) {
+        [sectionModel.rows enumerateObjectsUsingBlock:^(CXSettingRowModel * _Nonnull _rowModel, NSUInteger rowIndex, BOOL * _Nonnull rowStop) {
+            if(_rowModel == rowModel){
+                section = sectionIndex;
+                row = rowIndex;
+                
+                *rowStop = YES;
+                *sectionStop = YES;
+            }
+        }];
+    }];
+    
+    if(row == NSNotFound){
+        return;
+    }
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end

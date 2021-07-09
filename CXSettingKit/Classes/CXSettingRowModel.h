@@ -33,14 +33,17 @@
 
 @class CXSettingRightSwitchRowModel;
 
-typedef void(^CXSettingRightSwitchActionHandler)(CXSettingRightSwitchRowModel *switchRowModel,
-                                                 BOOL isOn,
-                                                 id context);
+typedef void(^CXSettingSwitchConfirmResultBlock)(BOOL confirmed);
+typedef void(^CXSettingSwitchConfirmBlock)(CXSettingRightSwitchRowModel *switchModel,
+                                           BOOL on,
+                                           id context,
+                                           CXSettingSwitchConfirmResultBlock resultBlock);
 
 @interface CXSettingRightSwitchRowModel : CXSettingRowModel
 
 @property (nonatomic, assign, getter = isOn) BOOL on;
-@property (nonatomic, copy) CXSettingRightSwitchActionHandler switchActionHandler;
+
+@property (nonatomic, copy) CXSettingSwitchConfirmBlock confirmBlock;
 
 @end
 

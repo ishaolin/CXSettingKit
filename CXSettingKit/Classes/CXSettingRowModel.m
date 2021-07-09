@@ -9,14 +9,12 @@
 
 @implementation CXSettingRowModel
 
-- (instancetype)initWithTitle:(NSString *)title actionHandler:(CXActionToolBarItemActionHandler)actionHandler{
-    if(self = [super initWithTitle:title actionHandler:actionHandler]){
-        self.height = 50.0;
-        self.arrowHidden = NO;
-        self.titleAlignment = NSTextAlignmentLeft;
-    }
+- (void)config{
+    [super config];
     
-    return self;
+    self.height = 50.0;
+    self.arrowHidden = NO;
+    self.titleAlignment = NSTextAlignmentLeft;
 }
 
 @end
@@ -30,6 +28,13 @@
 @end
 
 @implementation CXSettingRightSwitchRowModel
+
+- (void)config{
+    [super config];
+    
+    self.arrowHidden = YES;
+    self.enabled = NO;
+}
 
 @end
 

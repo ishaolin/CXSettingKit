@@ -24,17 +24,29 @@
     return self;
 }
 
-- (void)setRowModel:(CXSettingRowModel *)rowModel{
-    [super setRowModel:rowModel];
+- (void)displayRowModel:(CXSettingRowModel *)rowModel{
+    [super displayRowModel:rowModel];
     
     CXSettingRightSwitchRowModel *switchModel = (CXSettingRightSwitchRowModel *)rowModel;
     [_switchView setOn:switchModel.isOn animated:NO];
 }
 
 - (void)handleActionForSwitchView:(UISwitch *)switchView{
+    BOOL on = switchView.isOn;
     CXSettingRightSwitchRowModel *switchModel = (CXSettingRightSwitchRowModel *)self.rowModel;
-    if(switchModel.switchActionHandler){
-        switchModel.switchActionHandler(switchModel, switchView.isOn, [self cx_viewController]);
+    if(switchModel.confirmBlock){
+        UIViewController *viewController = [self cx_viewController];
+        switchModel.confirmBlock(switchModel, on, viewController, ^(BOOL confirmed) {
+            if(confirmed){
+                switchModel.on = on;
+                [switchModel invokeActionForContext:viewController];
+            }else{
+                [_switchView setOn:!on animated:NO];
+            }
+        });
+    }else{
+        switchModel.on = on;
+        [switchModel invokeActionForContext:[self cx_viewController]];
     }
 }
 

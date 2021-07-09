@@ -8,6 +8,8 @@
 #import <CXUIKit/CXUIKit.h>
 #import "CXSettingSectionModel.h"
 
+@class CXSettingTableViewCell;
+
 typedef void(^CXSettingViewControllerDataBlock)(NSArray<CXSettingSectionModel *> *items);
 
 @interface CXSettingViewController : CXBaseViewController <UITableViewDelegate, UITableViewDataSource>
@@ -17,8 +19,11 @@ typedef void(^CXSettingViewControllerDataBlock)(NSArray<CXSettingSectionModel *>
 
 - (void)reloadData; // 重新获取数据源
 
-- (void)loadDataWithCompletion:(CXSettingViewControllerDataBlock)completion;
+- (void)loadDataWithCompletion:(CXSettingViewControllerDataBlock)completion; // 子类实现，提供数据
 
-- (void)tableViewReloadData; // 刷新列表的显示
+- (CXSettingTableViewCell *)tableView:(UITableView *)tableView cellForRowModel:(CXSettingRowModel *)rowModel;
+
+- (void)refreshDisplay; // 刷新列表显示
+- (void)refreshDisplayForRowModel:(CXSettingRowModel *)rowModel; // 刷新rowModel对应的cell
 
 @end

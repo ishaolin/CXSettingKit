@@ -17,7 +17,7 @@
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier{
     if(self = [super initWithReuseIdentifier:reuseIdentifier]){
         _rightTextLabel = [[UILabel alloc] init];
-        _rightTextLabel.font = CX_PingFangSC_RegularFont(14.0);
+        _rightTextLabel.font = CX_PingFangSC_RegularFont(16.0);
         _rightTextLabel.textAlignment = NSTextAlignmentRight;
         _rightTextLabel.textColor = CXHexIColor(0x9099A1);
         [self.contentView addSubview:_rightTextLabel];
@@ -26,7 +26,9 @@
     return self;
 }
 
-- (void)setRowModel:(CXSettingRowModel *)rowModel{
+- (void)displayRowModel:(CXSettingRowModel *)rowModel{
+    [super displayRowModel:rowModel];
+    
     CXSettingRightTextRowModel *textModel = (CXSettingRightTextRowModel *)rowModel;
     _rightTextLabel.text = textModel.rightText;
     if(textModel.rightTextFont){
@@ -36,8 +38,6 @@
     if(textModel.rightTextColor){
         _rightTextLabel.textColor = textModel.rightTextColor;
     }
-    
-    [super setRowModel:rowModel];
 }
 
 - (void)layoutSubviews{
