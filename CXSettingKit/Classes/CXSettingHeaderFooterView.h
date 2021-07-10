@@ -2,7 +2,7 @@
 //  CXSettingHeaderFooterView.h
 //  CXSettingKit
 //
-//  Created by Michael Lynn on 2021/7/9.
+//  Created by wshaolin on 2021/7/9.
 //
 
 #import <UIKit/UIKit.h>

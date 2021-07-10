@@ -21,7 +21,6 @@
 
 @end
 
-
 @interface CXSettingSectionModel : NSObject
 
 @property (nonatomic, strong, readonly) NSArray<CXSettingRowModel *> *rows;

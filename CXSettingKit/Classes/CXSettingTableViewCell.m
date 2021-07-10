@@ -70,12 +70,17 @@
 }
 
 - (void)displayRowModel:(CXSettingRowModel *)rowModel{
-    if(rowModel.image){
-        _iconView.image = rowModel.image;
+    if([rowModel.image isKindOfClass:[UIImage class]]){
+        _iconView.image = (UIImage *)rowModel.image;
         _iconView.hidden = NO;
-    }else if([CXStringUtil isHTTPURL:rowModel.imageURL]){
-        [_iconView cx_setImageWithURL:rowModel.imageURL];
+    }else if([rowModel.image isKindOfClass:[NSString class]]){
         _iconView.hidden = NO;
+        NSURL *url = [NSURL cx_validURL:rowModel.image];
+        if(url){
+            [_iconView cx_setImageWithURL:url];
+        }else{
+            _iconView.image = nil;
+        }
     }else{
         _iconView.hidden = YES;
     }

@@ -21,6 +21,7 @@
         _badgeLabel.textAlignment = NSTextAlignmentCenter;
         _badgeLabel.textColor = [UIColor whiteColor];
         _badgeLabel.backgroundColor = [UIColor redColor];
+        
         [self.contentView addSubview:_badgeLabel];
     }
     

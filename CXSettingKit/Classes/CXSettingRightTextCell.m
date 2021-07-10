@@ -20,6 +20,7 @@
         _rightTextLabel.font = CX_PingFangSC_RegularFont(16.0);
         _rightTextLabel.textAlignment = NSTextAlignmentRight;
         _rightTextLabel.textColor = CXHexIColor(0x9099A1);
+        
         [self.contentView addSubview:_rightTextLabel];
     }
     

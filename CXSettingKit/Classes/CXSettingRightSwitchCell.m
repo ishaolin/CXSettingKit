@@ -18,6 +18,7 @@
     if(self = [super initWithReuseIdentifier:reuseIdentifier]){
         _switchView = [[UISwitch alloc] init];
         [_switchView addTarget:self action:@selector(handleActionForSwitchView:) forControlEvents:UIControlEventValueChanged];
+        
         [self.contentView addSubview:_switchView];
     }
     

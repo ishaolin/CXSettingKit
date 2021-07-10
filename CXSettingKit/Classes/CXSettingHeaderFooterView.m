@@ -2,7 +2,7 @@
 //  CXSettingHeaderFooterView.m
 //  CXSettingKit
 //
-//  Created by Michael Lynn on 2021/7/9.
+//  Created by wshaolin on 2021/7/9.
 //
 
 #import "CXSettingHeaderFooterView.h"
@@ -44,6 +44,7 @@
     if(self = [super initWithReuseIdentifier:reuseIdentifier]){
         _contentLabel = [[UILabel alloc] init];
         _contentLabel.textAlignment = NSTextAlignmentLeft;
+        
         [self.contentView addSubview:_contentLabel];
     }
     

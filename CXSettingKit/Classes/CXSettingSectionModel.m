@@ -50,11 +50,11 @@
     CGFloat frame_W = width - frame_X - _edgeInsets.right;
     CGFloat frame_H = [CXStringBounding bounding:_text rectWithSize:CGSizeZero font:_font].size.height;
     _frame = (CGRect){frame_X, frame_Y, frame_W, frame_H};
+    
     _height = CGRectGetMaxY(_frame) + _edgeInsets.bottom;
 }
 
 @end
-
 
 @implementation CXSettingSectionModel
 
@@ -85,5 +85,3 @@
 }
 
 @end
-
-
