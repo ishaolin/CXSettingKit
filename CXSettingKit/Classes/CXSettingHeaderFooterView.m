@@ -1,6 +1,6 @@
 //
 //  CXSettingHeaderFooterView.m
-//  CXSettingKit
+//  Pods
 //
 //  Created by wshaolin on 2021/7/9.
 //
