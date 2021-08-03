@@ -11,11 +11,12 @@
 #import "CXSettingKitDefines.h"
 #import "CXSettingRowModel.h"
 #import "CXSettingSectionModel.h"
-#import "CXSettingTableViewCell.h"
 #import "CXSettingViewController.h"
+#import "CXSettingTableViewCell.h"
 #import "CXSettingRightTextCell.h"
 #import "CXSettingRightImageCell.h"
 #import "CXSettingRightSwitchCell.h"
 #import "CXSettingRightBadgeCell.h"
+#import "CXSettingHeaderFooterView.h"
 
 #endif /* CXSettingKit_h */

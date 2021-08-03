@@ -115,12 +115,12 @@
     [self.tableView reloadData];
 }
 
-- (void)refreshDisplayForRowModel:(CXSettingRowModel *)rowModel{
+- (void)refreshDisplayForRowModel:(CXSettingRowModel *)model{
     __block NSUInteger section = 0;
     __block NSUInteger row = NSNotFound;
     [self.settingItems enumerateObjectsUsingBlock:^(CXSettingSectionModel * _Nonnull sectionModel, NSUInteger sectionIndex, BOOL * _Nonnull sectionStop) {
-        [sectionModel.rows enumerateObjectsUsingBlock:^(CXSettingRowModel * _Nonnull _rowModel, NSUInteger rowIndex, BOOL * _Nonnull rowStop) {
-            if(_rowModel == rowModel){
+        [sectionModel.rows enumerateObjectsUsingBlock:^(CXSettingRowModel * _Nonnull rowModel, NSUInteger rowIndex, BOOL * _Nonnull rowStop) {
+            if(model == rowModel){
                 section = sectionIndex;
                 row = rowIndex;
                 
@@ -130,12 +130,10 @@
         }];
     }];
     
-    if(row == NSNotFound){
-        return;
+    if(row != NSNotFound){
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end
