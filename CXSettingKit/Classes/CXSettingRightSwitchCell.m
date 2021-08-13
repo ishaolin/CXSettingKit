@@ -35,19 +35,22 @@
 - (void)handleActionForSwitchView:(UISwitch *)switchView{
     BOOL on = switchView.isOn;
     CXSettingRightSwitchRowModel *switchModel = (CXSettingRightSwitchRowModel *)self.rowModel;
+    UIViewController *viewController = [self cx_viewController];
+    void (^switchChanged)(void) = ^{
+        switchModel.on = on;
+        [switchModel invokeActionForContext:viewController];
+    };
+    
     if(switchModel.confirmBlock){
-        UIViewController *viewController = [self cx_viewController];
         switchModel.confirmBlock(switchModel, on, viewController, ^(BOOL confirmed) {
             if(confirmed){
-                switchModel.on = on;
-                [switchModel invokeActionForContext:viewController];
+                switchChanged();
             }else{
                 [_switchView setOn:!on animated:NO];
             }
         });
     }else{
-        switchModel.on = on;
-        [switchModel invokeActionForContext:[self cx_viewController]];
+        switchChanged();
     }
 }
 
